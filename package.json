@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node run.js",
     "lint": "eslint .",
-    "test": "jest test.js",
+    "test": "jest test/test.js",
     "ci": "make ci"
   },
   "dependencies": {
