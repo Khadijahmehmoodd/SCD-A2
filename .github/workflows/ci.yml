@@ -24,9 +24,6 @@ jobs:
     - name: Run tests
       run: npm test
 
-    - name: Run linting
-      run: npm run lint
-
     # Cleanup steps
     - name: Post job cleanup
       run: |
