@@ -19,10 +19,10 @@ jobs:
         node-version: '14'
 
     - name: Install dependencies
-      run: make start
+      run: npm start
 
     - name: Run tests
-      run: make test
+      run: npm jest
 
     - name: Run linting
-      run: make lint
+      run: npm lint
