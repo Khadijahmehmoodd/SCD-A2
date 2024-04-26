@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Heavens Above
 
 爬取 Heavens Above 网站，获取卫星过境等信息。基于 Node.js，需使用 `npm` 安装依赖。  
@@ -37,3 +38,6 @@ http://www.gnu.org/licenses/gpl-3.0.html
 
 =\_=
 User Customize
+=======
+# Scd-Assignment-2
+>>>>>>> abc6778f751c0046ab792665a6e22b9ef52538b0
