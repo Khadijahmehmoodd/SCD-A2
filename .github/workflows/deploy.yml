@@ -3,53 +3,35 @@ name: Deployment Pipeline
 on:
   push:
     branches:
-      - main
+      - main  # Set this to any branch from which you want to deploy
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'  # Specify a Node.js version supported by Heroku
 
-      # Add steps for building the application
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm install
 
-      - name: Build application
-        run: npm run build
+    - name: Run tests
+      run: npm test
+      env:
+        CI: true
 
-  test:
-    runs-on: ubuntu-latest
+    - name: Login to Heroku
+      run: heroku login -i
 
-    needs: build
+    - name: Deploy to Heroku
+      run: |
+        git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git HEAD:refs/heads/main
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}  # Heroku API key
+        HEROKU_APP_NAME: your-heroku-app-name  # Your Heroku app name
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Add steps for running tests
-      - name: Run tests
-        run: npm test
-
-  deploy:
-    runs-on: ubuntu-latest
-
-    needs: test
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Add steps for deploying the application
-      - name: Deploy to Heroku
-        uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: your-heroku-app-name
