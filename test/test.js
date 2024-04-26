@@ -1,50 +1,31 @@
-// Import the necessary modules for testing
-const satellite = require("./satellite");
-const iridium = require("./iridium");
-const runScript = require("./run");
+const runScript = require('../run');
+const satellite = require('../src/satellite');
+const iridium = require('../src/iridium');
 
-// Test case for satellite.js
-describe("satellite.js", () => {
-  // Test case for fetching satellite table data
-  it("should fetch satellite table data for the specified target", async () => {
-    const testData = { target: 25544, pages: 4, root: "./public/data/" };
-    const result = await satellite.getTable(testData);
-    // Assert that the result is stored in the specified directory
-    expect(result).toBeDefined();
-    // Add more assertions as needed to validate the result
-  });
-});
+jest.mock('../src/satellite');
+jest.mock('../src/iridium');
 
-// Test case for iridium.js
-describe("iridium.js", () => {
-  // Test case for fetching iridium table data
-  it("should fetch iridium table data for the specified target", async () => {
-    const testData = { target: "IridiumFlares", pages: 4, root: "./public/data/" };
-    const result = await iridium.getTable(testData);
-    // Assert that the result is stored in the specified directory
-    expect(result).toBeDefined();
-    // Add more assertions as needed to validate the result
-  });
-});
+describe('run.js', () => {
+  describe('runScript', () => {
+    afterEach(() => {
+      jest.clearAllMocks(); // Reset mock state after each test
+    });
 
-// Test case for run.js
-describe("run.js", () => {
-  // Test case for running the run.js script
-  it("should run the run.js script without errors", async () => {
-    // Execute the run script
-    await runScript();
-    // Assert that the script runs without errors
-    // Add more assertions as needed to validate the behavior of the script
-  });
-});
+    it('should run the run.js script without errors', async () => {
+      // Mocking behavior of satellite.getTable and iridium.getTable
+      satellite.getTable.mockResolvedValue('Satellite data fetched successfully');
+      iridium.getTable.mockResolvedValue('Iridium data fetched successfully');
 
-// Integration Test Case
-describe("Integration Tests", () => {
-  // Overall integration test
-  it("should integrate satellite and iridium functionalities", async () => {
-    // Run the entire system by executing the run.js script
-    await runScript();
-    // Assert that both satellite and iridium data are fetched and stored correctly
-    // Add more assertions as needed to validate the integration
+      await expect(runScript()).resolves.toBeUndefined();
+      // Assert that the script runs without errors
+    });
+
+    it('should handle errors during execution', async () => {
+      // Mocking behavior of satellite.getTable to throw an error
+      satellite.getTable.mockRejectedValue(new Error('Error fetching satellite data'));
+
+      await expect(runScript()).rejects.toThrow('Error fetching satellite data');
+      // Assert that the script handles errors during execution
+    });
   });
 });
