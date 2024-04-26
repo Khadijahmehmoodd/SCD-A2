@@ -8,6 +8,7 @@
     "start": "node index.js",
     "lint": "eslint .",
     "test": "jest",
+    "build": "ng build",
     "ci": "make ci",
     "update": "npm update",
     "analyze": "npm run analyze",
