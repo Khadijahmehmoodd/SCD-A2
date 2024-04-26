@@ -18,7 +18,7 @@ jobs:
           node-version: '14'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       # Additional steps for updating dependencies
       - name: Check for dependency updates
