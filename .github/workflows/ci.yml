@@ -19,10 +19,18 @@ jobs:
         node-version: '14'
 
     - name: Install dependencies
-      run: npm start
+      run: npm install
 
     - name: Run tests
-      run: npm jest
+      run: npm test
 
     - name: Run linting
-      run: npm lint
+      run: npm run lint
+
+    # Cleanup steps
+    - name: Post job cleanup
+      run: |
+        /usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+        /usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+        /usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+        /usr/bin/git config --local --unset-all http.https://github.com/.extraheader
