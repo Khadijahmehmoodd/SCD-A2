@@ -1,8 +1,9 @@
 name: Email Notification Workflow
 
 on:
-  pull_request:
-    types: [opened, reopened, edited]
+  push:
+    branches:
+      - main  
 
 jobs:
   send-notification:
@@ -19,11 +20,12 @@ jobs:
           server_port: 587
           username: ${{ secrets.EMAIL_ADDRESS }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "New Pull Request: ${{ github.event.pull_request.title }}"
+          subject: "New Push to Branch: ${{ github.ref }}"
           to: "khadijamahmood77@yahoo.com"
           from: "noreply@example.com"
           body: |
-            A new pull request has been opened in the repository:
+            A new push has been made to the repository:
             Repository: ${{ github.repository }}
-            Action: ${{ github.event.action }}
-            Author: ${{ github.actor }}
+            Branch: ${{ github.ref }}
+            Committer: ${{ github.actor }}
+
