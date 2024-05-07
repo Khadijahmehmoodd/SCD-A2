@@ -21,7 +21,7 @@ jobs:
           username: ${{ secrets.EMAIL_ADDRESS }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "New Push to Branch: ${{ github.ref }}"
-          to: "khadijamahmood77@yahoo.com"
+          to: "i200970@nu.edu.com"
           from: "noreply@example.com"
           body: |
             A new push has been made to the repository:
